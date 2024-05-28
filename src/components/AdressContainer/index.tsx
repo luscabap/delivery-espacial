@@ -13,7 +13,6 @@ export default function AdressContainer({ lot, local, company, id, removeAdress 
         <li className="text-right">Company: {company}</li>
       </ul>
       <div className="flex justify-between">
-        <button>Edit</button>
         <button 
           onClick={() => removeAdress(id)}
           className="font-bold transition-all hover:bg-red-900 hover:border-red-950"

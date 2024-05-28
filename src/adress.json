@@ -2,7 +2,19 @@
   {
     "id": 1,
     "lot": "1XYZ",
-    "local": "factory",
+    "local": "Factory",
     "company": "NASA"
+  },
+  {
+    "id": 2,
+    "lot": "RSF2",
+    "local": "Hangar",
+    "company": "StarLink"
+  },
+  {
+    "id": 3,
+    "lot": "SFD2",
+    "local": "Factory",
+    "company": "ISS"
   }
 ]

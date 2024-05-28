@@ -10,7 +10,7 @@ interface IAdressForm {
 }
 
 export default function AdressForm({ addAdress }: IAdressForm){
-  const { register, handleSubmit, formState: { errors } } = useForm<Schema>({
+  const { register, handleSubmit, formState: { errors }, setValue } = useForm<Schema>({
     resolver: zodResolver(schemaAdress),
     defaultValues: {
       lot: "",
@@ -21,7 +21,11 @@ export default function AdressForm({ addAdress }: IAdressForm){
 
   const onSubmit = (data: Schema) => {
     addAdress(data.lot, data.local, data.company)
+    setValue("company", "");
+    setValue("local", "");
+    setValue("lot", "");
   }
+
   return (
       <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
         <input
