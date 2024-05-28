@@ -6,6 +6,7 @@ import AdressForm from './components/AdressForm';
 
 function App() {
   const [adress, setAdress] = useState<adressProps[]>(data);
+  const [createOpen, setCreateOpen] = useState(true);
 
   const addAdress = (lot: string, local: string, company: string) => {
     const newAdress = [...adress, {
@@ -26,10 +27,18 @@ function App() {
     setAdress(filteredAdress);
   }
 
+  const handleCreateAdress = () => {
+    setCreateOpen(!createOpen)
+  }
+
   return (
     <div className='flex justify-center items-center flex-col'>
-    <h1 className='bg-zinc-600 p-2'>Adress List</h1>
-    <AdressForm addAdress={addAdress} />
+    <h1 className='bg-zinc-600 p-2 self-start'>Adress List</h1>
+    <h2 className='text-2xl m-2 text-cyan-800 cursor-pointer hover:text-cyan-600' onClick={handleCreateAdress}>+ Create Mars Adress</h2>
+    {
+      createOpen ? <AdressForm addAdress={addAdress} /> : null
+    }
+    
     {
       adress.map(adress => <AdressContainer 
         key={adress.id} 
