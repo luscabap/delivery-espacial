@@ -1,49 +1,55 @@
-import { useState } from "react"
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod"
+import * as z from "zod";
+import { schemaAdress } from "../../schemas/schemaAdress";
+
+type Schema = z.infer<typeof schemaAdress>
 
 interface IAdressForm {
   addAdress: (lot: string, local: string, company: string) => void
 }
 
 export default function AdressForm({ addAdress }: IAdressForm){
-  const [lot, setLot] = useState("");
-  const [local, setLocal] = useState("");
-  const [company, setCompany] = useState("");
-  
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if(!lot || local == "" || !company){
-      alert("Por favor, verifique os campos digitados")
+  const { register, handleSubmit, formState: { errors } } = useForm<Schema>({
+    resolver: zodResolver(schemaAdress),
+    defaultValues: {
+      lot: "",
+      company: "",
+      local: ""
     }
-    
-    addAdress(lot, local, company);
+  })
 
-    setLot("");
-    setLocal("");
-    setCompany("");
+  const onSubmit = (data: Schema) => {
+    addAdress(data.lot, data.local, data.company)
   }
-
   return (
-    <>
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        <input 
-          type="text" 
+      <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
+        <input
           placeholder="Enter number lot"
-          onChange={e => setLot(e.target.value)}
-          className="p-2"
+          className="p-2 min-w-96"
+          {...register("lot")}
         />
-        <select onChange={e => setLocal(e.target.value)} className="p-2">
+        { errors.lot?.message && (
+          <span className="text-red-500">{errors.lot.message}</span>
+        ) }
+        <select className="p-2 min-w-96" {...register("local")}>
           <option></option>
           <option>Factory</option>
           <option>Hangar</option>
         </select>
+        { errors.local?.message && (
+          <span className="text-red-500">{errors.local.message}</span>
+        ) }
         <input 
           type="text" 
           placeholder="Enter company" 
-          onChange={e => setCompany(e.target.value)}
-          className="p-2"
+          className="p-2 min-w-96"
+          {...register("company")}
         />
+        { errors.company?.message && (
+          <span className="text-red-500">{errors.company.message}</span>
+        ) }
         <button type="submit">Add Adress</button>
       </form>
-    </>
   )
 }
